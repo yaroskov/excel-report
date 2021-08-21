@@ -10,7 +10,4 @@ class CreationRun(ReportCreator):
         self.build_report()
         self.print()
         self.write()
-
-    def results_interface(self):
-        self.results_info = "report done with: errors: " + str(self.results_lite["errorsNumber"])
-        self.results_info += "; incidents: " + str(self.results_lite["incidentsTotalNumber"])
+        ReportCreator.complete_info()
