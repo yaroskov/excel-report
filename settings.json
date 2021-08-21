@@ -1,0 +1,13 @@
+{
+	"paths": {
+		"results": {
+			"path": "results/",
+			"source": "tasks_06-08-2021_17.05.02.json"
+		},
+		"source": {
+			"path": "source/",
+			"source": "sheet001.htm"
+		},
+		"beauties": {"path": "beauties/"}
+	}
+}
