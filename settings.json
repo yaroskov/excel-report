@@ -1,8 +1,7 @@
 {
 	"paths": {
 		"results": {
-			"path": "results/",
-			"source": "tasks_06-08-2021_17.05.02.json"
+			"path": "results/"
 		},
 		"source": {
 			"path": "source/",

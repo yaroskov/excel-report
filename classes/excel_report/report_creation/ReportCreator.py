@@ -26,32 +26,7 @@ class ReportCreator(Data):
 
                 task.append(data_el)
 
-            columns = [
-                "service",
-                "context",
-                "startDate",
-                "statusDate",
-                "orderId",
-                "orderStatusId",
-                "statusText",
-                "action",
-                "state",
-                "body1",
-                "body2",
-                "body3",
-                "body4",
-                "errorMessage1",
-                "errorMessage2",
-                "errorMessage3"
-            ]
-
-            task_complete = {}
-            i = 0
-            for el in columns:
-                if len(task) > i:
-                    task_complete[el] = task[i]
-                i += 1
-
+            task_complete = Data.beauty_formatting(task)
             tasks.append(task_complete)
 
         tasks.pop(len(tasks) - 1)

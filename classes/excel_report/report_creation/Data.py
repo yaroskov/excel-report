@@ -1,4 +1,3 @@
-#from datetime import datetime
 from classes.tools.Tools import Tools
 
 
@@ -8,29 +7,38 @@ class Data:
         self.results = []
         self.results_lite = []
 
-    """def curr_item(self, item):
-        curr_item = {'name': item['name']}
-        int_unix_time = int(item['startTime']) / 1000
-        curr_item['startTime'] = datetime.fromtimestamp(int_unix_time).strftime('%Y-%m-%d %H:%M:%S')
-        curr_item["URI"] = self.set_path_relative("dynotraceURI") + item["callURI"] + ";gf=all"
-        curr_item["errorsData"] = item["errorsData"]
-        curr_item["requestAttributeData"] = item["requestAttributeData"]
+    @staticmethod
+    def beauty_formatting(task):
+        columns = [
+            "service",
+            "context",
+            "startDate",
+            "statusDate",
+            "orderId",
+            "orderStatusId",
+            "statusText",
+            "action",
+            "state",
+            "body1",
+            "body2",
+            "body3",
+            "body4",
+            "errorMessage1",
+            "errorMessage2",
+            "errorMessage3"
+        ]
 
-        return curr_item"""
+        task_complete = {}
+        i = 0
+        for el in columns:
+            if len(task) > i:
+                task_complete[el] = task[i]
+            i += 1
+
+        return task_complete
 
     def set_path(self, source):
         return self.settings["paths"][source]["path"]
 
-    #def set_path_relative(self, source):
-    #    return self.settings["sources"][source]["path"]
-
     def set_file(self, source):
         return self.settings["paths"][source]["source"]
-
-    #def print_results(self, data):
-    #    if self.settings["options"]["printData"]:
-    #        print(data)
-
-    #def write_results(self, data, path, prefix, extension):
-    #    if self.settings["options"]["writeData"]:
-    #        Tools.write_data_to_file(data=data, path=path, prefix=prefix, extension=extension)
