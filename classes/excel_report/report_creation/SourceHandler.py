@@ -6,9 +6,6 @@ from lxml import etree
 class SourceHandler(Data):
     def __init__(self):
         super(SourceHandler, self).__init__()
-        #self.settings = Tools.json_load("settings.json")
-        #self.results = []
-        #self.results_lite = []
 
     @staticmethod
     def beauty_formatting(task):
