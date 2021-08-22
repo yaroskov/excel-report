@@ -1,4 +1,4 @@
-from classes.excel_report.report_creation.Data import Data
+from classes.excel_report.report_creation.data.Data import Data
 from classes.tools.Tools import Tools
 from lxml import etree
 

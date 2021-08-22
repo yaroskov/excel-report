@@ -1,6 +1,7 @@
-from classes.excel_report.report_creation.Data import Data
+from classes.excel_report.report_creation.data.Data import Data
 from classes.tools.Tools import Tools
-from classes.excel_report.report_creation.SourceHandler import SourceHandler
+from classes.excel_report.report_creation.handlers.SourceHandler import SourceHandler
+from classes.excel_report.report_creation.handlers.ServiceSort import ServiceSort
 
 
 class ReportCreator(Data):
@@ -11,6 +12,7 @@ class ReportCreator(Data):
     def build_report(self):
         source_handler = SourceHandler()
         self.results = source_handler.source_handler()
+        self.results = ServiceSort.run(self.results)
 
         self.results = Tools.json_view(self.results)
 
