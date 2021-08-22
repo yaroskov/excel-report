@@ -7,19 +7,45 @@ class ServiceSort(Data):
 
     @staticmethod
     def run(source):
-        results = []
+        report = {
+            "errorsTotalNumber": len(source),
+            "affectedServicesNumber": 0,
+            "errorsData": [],
+            "errorsDataLight": []
+        }
 
         curr_service = ""
         for block in source:
             if curr_service != block["service"]:
+                report["affectedServicesNumber"] += 1
                 curr_service = block["service"]
-                new_block = {
-                    "service": curr_service,
-                    "data": [block]
-                }
-                results.append(new_block)
+                report["errorsData"].append(ServiceSort.new_block_full(curr_service, block))
+                report["errorsDataLight"].append(ServiceSort.new_block_light(curr_service))
             else:
-                target_block = results[-1]
-                target_block["data"].append(block)
+                report["errorsData"][-1]["data"].append(block)
+                report["errorsData"][-1]["incidentsNumber"] += 1
+                report["errorsDataLight"][-1]["incidentsNumber"] += 1
 
-        return results
+        return report
+
+    @staticmethod
+    def new_block_full(curr_service, block):
+        new_block = {
+            "service": curr_service,
+            "incidentsNumber": 1,
+            "data": [block]
+        }
+        return new_block
+
+    @staticmethod
+    def new_block_light(curr_service):
+        new_block = {
+            "service": curr_service,
+            "incidentsNumber": 1
+        }
+        return new_block
+
+    @staticmethod
+    def delete_full_data(source):
+        del source["errorsData"]
+        return source

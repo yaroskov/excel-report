@@ -9,4 +9,5 @@ class CreationRun(ReportCreator):
         self.build_report()
         self.print()
         self.write()
-        ReportCreator.complete_info()
+        self.write_light()
+        self.complete_info()
