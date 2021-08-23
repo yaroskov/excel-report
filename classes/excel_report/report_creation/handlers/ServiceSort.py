@@ -10,8 +10,7 @@ class ServiceSort(Data):
         report = {
             "errorsTotalNumber": len(source),
             "affectedServicesNumber": 0,
-            "errorsData": [],
-            "errorsDataLight": []
+            "errorsData": []
         }
 
         curr_service = ""
@@ -20,11 +19,9 @@ class ServiceSort(Data):
                 report["affectedServicesNumber"] += 1
                 curr_service = block["service"]
                 report["errorsData"].append(ServiceSort.new_block_full(curr_service, block))
-                report["errorsDataLight"].append(ServiceSort.new_block_light(curr_service))
             else:
                 report["errorsData"][-1]["data"].append(block)
                 report["errorsData"][-1]["incidentsNumber"] += 1
-                report["errorsDataLight"][-1]["incidentsNumber"] += 1
 
         return report
 
@@ -36,16 +33,3 @@ class ServiceSort(Data):
             "data": [block]
         }
         return new_block
-
-    @staticmethod
-    def new_block_light(curr_service):
-        new_block = {
-            "service": curr_service,
-            "incidentsNumber": 1
-        }
-        return new_block
-
-    @staticmethod
-    def delete_full_data(source):
-        del source["errorsData"]
-        return source

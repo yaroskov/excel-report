@@ -2,6 +2,8 @@ from classes.excel_report.report_creation.data.Data import Data
 from classes.tools.Tools import Tools
 from classes.excel_report.report_creation.handlers.SourceHandler import SourceHandler
 from classes.excel_report.report_creation.handlers.ServiceSort import ServiceSort
+from classes.excel_report.report_creation.handlers.MessageSort import MessageSort
+import copy
 
 
 class ReportCreator(Data):
@@ -16,7 +18,8 @@ class ReportCreator(Data):
         source_handler = SourceHandler()
         self.results = source_handler.source_handler()
         self.results = ServiceSort.run(self.results)
-        self.delete_full_data()
+        self.results["errorsData"] = MessageSort.sorter(self.results["errorsData"])
+        self.make_light_version()
         self.prepare_info()
 
         self.results = Tools.json_view(self.results)
@@ -32,9 +35,10 @@ class ReportCreator(Data):
         Tools.write_data_to_file(data=self.results_light, path=self.set_path("results"), prefix="results_light",
                                  extension="json")
 
-    def delete_full_data(self):
-        self.results_light = self.results.copy()
-        del self.results_light["errorsData"]
+    def make_light_version(self):
+        self.results_light = copy.deepcopy(self.results)
+        for item in self.results_light["errorsData"]:
+            item.pop("errors", None)
 
     def prepare_info(self):
         self.errors_total_number = self.results["errorsTotalNumber"]

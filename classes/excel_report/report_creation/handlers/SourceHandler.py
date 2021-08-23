@@ -41,10 +41,14 @@ class SourceHandler(Data):
         html_doc = Tools.text_file_load(self.set_path("source") + self.set_file("source"))
         doc = etree.HTML(html_doc)
 
+        for br in doc.xpath("*//br"):
+            br.tail = "\n" + br.tail if br.tail else "\n"
+
         tasks = []
         for tr in doc.xpath('//table/tr'):
             task = []
             for data in tr.xpath('./td'):
+
                 td_text = data.xpath('./text()')
                 star_text = data.xpath('.//*/text()')
 
