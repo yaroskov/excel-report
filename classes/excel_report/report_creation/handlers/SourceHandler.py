@@ -4,8 +4,8 @@ from lxml import etree
 
 
 class SourceHandler(Data):
-    def __init__(self):
-        super(SourceHandler, self).__init__()
+    def __init__(self, config):
+        super(SourceHandler, self).__init__(config)
 
     @staticmethod
     def beauty_formatting(task):
@@ -38,7 +38,7 @@ class SourceHandler(Data):
         return task_complete
 
     def source_handler(self):
-        html_doc = Tools.text_file_load(self.set_path("source") + self.set_file("source"))
+        html_doc = Tools.text_file_load(self.config.paths["source"])
         doc = etree.HTML(html_doc)
 
         for br in doc.xpath("*//br"):

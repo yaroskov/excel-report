@@ -2,8 +2,8 @@ from classes.excel_report.report_creation.data.Data import Data
 
 
 class ServiceSort(Data):
-    def __init__(self):
-        super(ServiceSort, self).__init__()
+    def __init__(self, config):
+        super(ServiceSort, self).__init__(config)
 
     @staticmethod
     def run(source):

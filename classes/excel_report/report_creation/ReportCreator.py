@@ -7,18 +7,19 @@ import copy
 
 
 class ReportCreator(Data):
-    def __init__(self):
-        super(ReportCreator, self).__init__()
+    def __init__(self, config):
+        super(ReportCreator, self).__init__(config)
         self.results = {}
         self.results_light = {}
         self.errors_total_number = 0
         self.affected_services_number = 0
 
     def build_report(self):
-        source_handler = SourceHandler()
+        source_handler = SourceHandler(self.config)
         self.results = source_handler.source_handler()
         self.results = ServiceSort.run(self.results)
-        self.results["errorsData"] = MessageSort.sorter(self.results["errorsData"])
+        message_sort = MessageSort(self.config)
+        self.results["errorsData"] = message_sort.sorter(self.results["errorsData"])
         self.make_light_version()
         self.prepare_info()
 
