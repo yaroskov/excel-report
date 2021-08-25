@@ -5,7 +5,8 @@ import likes
 
 # Paths to program files and folders.
 paths = {
-	"results": "results/",
+	"results_full": "results/full/",
+	"results_light": "results/light/",
 	"source": "source/sheet001.htm",
 	"beauties": "beauties/"
 }

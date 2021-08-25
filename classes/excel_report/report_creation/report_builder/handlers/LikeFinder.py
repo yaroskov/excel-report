@@ -1,4 +1,4 @@
-from classes.excel_report.report_creation.data.Data import Data
+from classes.excel_report.report_creation.report_builder.data.Data import Data
 
 
 class LikeFinder(Data):

@@ -1,5 +1,5 @@
-from classes.excel_report.report_creation.data.Data import Data
-from classes.excel_report.report_creation.handlers.LikeFinder import LikeFinder
+from classes.excel_report.report_creation.report_builder.data.Data import Data
+from classes.excel_report.report_creation.report_builder.handlers.LikeFinder import LikeFinder
 
 
 class MessageSort(Data):
@@ -18,14 +18,6 @@ class MessageSort(Data):
             block["data"] = sorted(block["data"], key=lambda item: item["body2"])
             curr_message = "666"
             for item in block["data"]:
-
-                """likes = [
-                    "ru.gosuslugi.pgu.core.processing.exception.NoResponseException: Couldn't\n  load response by link:\n  terrabyte:",
-                    "ru.atc.carcass.common.exception.FaultException: Client error while calling\n  esia oss, orderId =",
-                    "statusCode = 400, statusText = , body =\n  {\"reason\":\"ERROR: duplicate key value violates unique\n  constraint \\\"claim_oph_unq",
-                    "QuSDQpNC10LTQtdGA0LDRhtC40LgwZjAfBggqhQMHAQEBATATBgcqhQMCAiQABggqhQMHAQECAgNDAARASUEeWLJAKYh4Pvb6LGw4Kask5cxFkwNQ25EOy6X9hOw0xeOouk09PN6MgsfE",
-                    "ru.gosuslugi.pgu.core.processing.exception.ProcessingServiceException:\n  FAULTProcessing for messageId=ID:"
-                ]"""
 
                 likes = LikeFinder(self.config)
                 like = likes.run(curr_message)
