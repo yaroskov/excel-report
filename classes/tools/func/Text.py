@@ -19,5 +19,14 @@ class Text:
     def text_file_load(source):
         with open(source, "r", encoding="windows-1251") as data:
             text = data.read()
+        data.close()
+
+        return text
+
+    @staticmethod
+    def text_file_load_utf_8(source):
+        with open(source, "r", encoding="utf_8_sig") as data:
+            text = data.read()
+        data.close()
 
         return text

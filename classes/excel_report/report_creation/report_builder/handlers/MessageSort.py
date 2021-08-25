@@ -1,4 +1,4 @@
-from classes.excel_report.report_creation.report_builder.data.Data import Data
+from classes.data.Data import Data
 from classes.excel_report.report_creation.report_builder.handlers.LikeFinder import LikeFinder
 
 
@@ -24,14 +24,15 @@ class MessageSort(Data):
 
                 if curr_message != item["body2"] and not like:
                     curr_message = item["body2"]
+                    cleared_msg = curr_message.replace("\n ", "")
                     new_block = {
-                        "message": curr_message,
+                        "message": cleared_msg,
                         "incidentsNumber": 1,
                         "data": [item]
                     }
                     results["errors"].append(new_block)
                     new_light = {
-                        "message": curr_message,
+                        "message": cleared_msg,
                         "incidentsNumber": 1
                     }
                     results["light"].append(new_light)

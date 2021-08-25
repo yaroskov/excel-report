@@ -1,4 +1,4 @@
-from classes.excel_report.report_creation.report_builder.data.Data import Data
+from classes.data.Data import Data
 from classes.tools.Tools import Tools
 from classes.excel_report.report_creation.report_builder.handlers.SourceHandler import SourceHandler
 from classes.excel_report.report_creation.report_builder.handlers.ServiceSort import ServiceSort

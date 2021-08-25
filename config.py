@@ -5,10 +5,14 @@ import likes
 
 # Paths to program files and folders.
 paths = {
-	"results_full": "results/full/",
-	"results_light": "results/light/",
-	"source": "source/sheet001.htm",
-	"beauties": "beauties/"
+	"results_full": "excel_report/results/full/",
+	"results_light": "excel_report/results/light/",
+	"source": "excel_report/source/sheet001.htm",
+	"report": "report/",
+	"tasks": {
+		"source": "tasks/source/gosuslugi-jira 2021-08-25T16_03_45+0300.html",
+		"results": "tasks/results/"
+	}
 }
 
 # Likes list for grouping similar problems by the Message
