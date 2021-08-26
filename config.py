@@ -10,6 +10,7 @@ paths = {
 	"source": "excel_report/source/sheet001.htm",
 	"report": "report/",
 	"tasks": {
+		"list": "tasks/results/tasks_25-08-2021_16.06.13.json",
 		"source": "tasks/source/gosuslugi-jira 2021-08-25T16_03_45+0300.html",
 		"results": "tasks/results/"
 	}

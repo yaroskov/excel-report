@@ -1,6 +1,7 @@
+import re
 from classes.data.Data import Data
 from classes.excel_report.report_creation.report_builder.handlers.LikeFinder import LikeFinder
-import re
+from classes.add_tasks.AddTasks import AddTasks
 
 
 class MessageSort(Data):
@@ -27,8 +28,10 @@ class MessageSort(Data):
                     curr_message = item["body2"]
                     cleared_msg = MessageSort.clear_msg(curr_message)
                     search_data = MessageSort.search_data(cleared_msg)
-                    results["errors"].append(MessageSort.new_block_full(cleared_msg, search_data, item))
-                    results["light"].append(MessageSort.new_block_light(cleared_msg, search_data))
+                    add_tasks = AddTasks(self.config)
+                    found_tasks = add_tasks.run(search_data)
+                    results["errors"].append(MessageSort.new_block_full(cleared_msg, found_tasks, item))
+                    results["light"].append(MessageSort.new_block_light(cleared_msg, found_tasks))
                 else:
                     results["errors"][-1]["data"].append(item)
                     results["errors"][-1]["incidentsNumber"] += 1
@@ -38,26 +41,32 @@ class MessageSort(Data):
         return whole_data
 
     @staticmethod
-    def new_block_light(cleared_msg, search_data):
+    def new_block_light(cleared_msg, found_tasks):
         block = {
             "message": cleared_msg,
             "incidentsNumber": 1,
-            "searchData": search_data
+            "foundTasks": found_tasks
         }
         return block
 
     @staticmethod
-    def new_block_full(cleared_msg, search_data, item):
-        block = MessageSort.new_block_light(cleared_msg, search_data)
+    def new_block_full(cleared_msg, found_tasks, item):
+        block = MessageSort.new_block_light(cleared_msg, found_tasks)
         block["data"] = [item]
         return block
 
     @staticmethod
     def clear_msg(curr_message):
-        return curr_message.replace("\n ", "")
+        if curr_message != "":
+            return curr_message.replace("\n ", "")
+        else:
+            return curr_message
 
     @staticmethod
     def search_data(cleared_msg):
-        search_data = re.split(":|=", cleared_msg)
-        search_data.append(cleared_msg)
-        return search_data
+        if cleared_msg != "":
+            search_data = re.split(":|=", cleared_msg)
+            search_data.append(cleared_msg)
+            return search_data
+        else:
+            return None
