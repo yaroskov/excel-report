@@ -7,6 +7,9 @@ import likes
 paths = {
 	"results_full": "excel_report/results/full/",
 	"results_light": "excel_report/results/light/",
+	"results": {
+		"ready": "excel_report/results/light/results_light_26-08-2021_14.34.01.json"
+	},
 	"source": "excel_report/source/sheet001.htm",
 	"report": "report/",
 	"tasks": {
