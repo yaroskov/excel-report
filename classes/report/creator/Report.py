@@ -17,7 +17,6 @@ class Report(Data):
         results = f"Отчет от {Tools.time_now('%d.%m.%Y')} г."
         results += "\n"
         results += "\nВ ходе анализа были получены следующие результаты:"
-        results += "\n"
         results += f"\nВсего инцидентов в {self.raw['affectedServicesNumber']} услугах: {self.raw['errorsTotalNumber']} шт."
         results += "\n"
         results += f"\nВСЕГО УСЛУГ: {self.raw['errorsTotalNumber']}"
