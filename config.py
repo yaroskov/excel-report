@@ -1,23 +1,32 @@
-import likes
-
+import pseudos
+import services
 
 # User's configuration of program.
 
-# Paths to program files and folders.
+# Options:
+options = {
+	"usePseudo": False,
+	"useServices": False,
+}
+
+# Paths to program files and folders:
 paths = {
 	"results_full": "excel_report/results/full/",
 	"results_light": "excel_report/results/light/",
 	"results": {
-		"ready": "excel_report/results/light/results_light_26-08-2021_14.34.01.json"
+		"ready": "excel_report/results/light/results_light_30-12-2021_03.28.43.json"
 	},
-	"source": "excel_report/source/sheet001.htm",
+	"source": "excel_report/source/1.htm",
 	"report": "report/",
 	"tasks": {
-		"list": "tasks/results/tasks_25-08-2021_16.06.13.json",
-		"source": "tasks/source/gosuslugi-jira 2021-08-25T16_03_45+0300.html",
+		"list": "tasks/results/tasks_27-12-2021_20.05.51.json",
+		"source": "tasks/source/jira.egovdev 2021-12-27T19_57_08+0300.html",
 		"results": "tasks/results/"
 	}
 }
 
-# Likes list for grouping similar problems by the Message
-likes = likes.likes
+# List of pseudonyms
+pseudos = pseudos.data
+
+# List of services
+services = services.data

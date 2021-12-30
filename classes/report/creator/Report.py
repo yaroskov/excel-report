@@ -17,9 +17,7 @@ class Report(Data):
         results = f"Отчет от {Tools.time_now('%d.%m.%Y')} г."
         results += "\n"
         results += "\nВ ходе анализа были получены следующие результаты:"
-        results += f"\nВсего инцидентов в {self.raw['affectedServicesNumber']} услугах: {self.raw['errorsTotalNumber']} шт."
-        results += "\n"
-        results += f"\nВСЕГО УСЛУГ: {self.raw['errorsTotalNumber']}"
+        results += f"\nВсего инцидентов {self.raw['errorsTotalNumber']} шт. обнаружено в {self.raw['affectedServicesNumber']} услугах."
         results += "\n"
 
         i = 0
@@ -27,32 +25,21 @@ class Report(Data):
             i += 1
             results += f"\n{i}. {service['service']}"
             results += "\n"
-            results += f"\n\tВСЕГО ИНЦИДЕНТОВ В УСЛУГЕ: {service['incidentsNumber']}"
+            results += f"\n\tКОЛИЧЕСТВО ИНЦИДЕНТОВ В УСЛУГЕ: {service['incidentsNumber']}"
             results += "\n"
             j = 0
             for error in service["light"]:
                 j += 1
-                results += f"\n\t{j}) Message: {error['message']}"
-                results += f"\n\tКол-во: ~{error['incidentsNumber']} шт."
+                results += f"\n\t{j}) {error['message']}"
+                results += f"\n\tКоличество: ~{error['incidentsNumber']} шт."
 
                 if error["foundTasks"] and len(error["foundTasks"]) > 0:
                     if error['foundTasks'][0]['tasks'] and len(error['foundTasks'][0]['tasks']) > 0:
-                        results += f"\n\t№ задачи: {error['foundTasks'][0]['tasks'][0]['key']}"
-                        results += f"\n\tНазвание: {error['foundTasks'][0]['tasks'][0]['summary']}"
+                        results += f"\n\tЗадача: {error['foundTasks'][0]['tasks'][0]['key']}"
+                        results += f" {error['foundTasks'][0]['tasks'][0]['summary']}"
 
                     results += "\n"
-                    results += "\n\t\tBEGINNING OF POSSIBLE TASKS"
-                    k = 0
-                    for task in error["foundTasks"]:
-                        k += 1
-                        results += f"\n\t\t\tMESSAGE: {task['message']}"
-                        t = 0
-                        for var in task["tasks"]:
-                            t += 1
-                            results += f"\n\t\t\t\t№ задачи: {var['key']}"
-                            results += f"\n\t\t\t\tНазвание: {var['summary']}"
-                    results += "\n\t\tENDING OF POSSIBLE TASKS LIST"
-                    results += "\n"
+
                 else:
                     results += "\n"
 

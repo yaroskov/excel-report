@@ -15,14 +15,14 @@ class ResultsHandler(Data):
         print(self.results)
 
     def write(self):
-        Tools.write_data_to_file(data=self.results,
-                                 path=self.config.paths["results_full"],
-                                 prefix="results_full")
+        return Tools.write_data_to_file(data=self.results,
+                                        path=self.config.paths["results_full"],
+                                        prefix="results_full")
 
     def write_light(self):
-        Tools.write_data_to_file(data=self.results_light,
-                                 path=self.config.paths["results_light"],
-                                 prefix="results_light")
+        return Tools.write_data_to_file(data=self.results_light,
+                                        path=self.config.paths["results_light"],
+                                        prefix="results_light")
 
     def make_light_version(self):
         self.results_light = copy.deepcopy(self.results)

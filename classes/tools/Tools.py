@@ -22,4 +22,8 @@ class Tools:
 
     @staticmethod
     def write_data_to_file(data, path="", prefix="", extension="json"):
-        WriteToFile.run(data, path, prefix, extension)
+        return WriteToFile.run(data, path, prefix, extension)
+
+    @staticmethod
+    def text_file_load_utf8(source):
+        return Text.text_file_load_utf_8(source)

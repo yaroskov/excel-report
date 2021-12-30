@@ -7,6 +7,9 @@ class LikeFinder(Data):
         self.likes = config.likes
 
     def run(self, prev_msg):
+        if prev_msg is None:
+            prev_msg = ""
+
         curr_like = None
         for like in self.likes:
 

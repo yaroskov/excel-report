@@ -1,7 +1,6 @@
-import re
 from classes.data.Data import Data
-from classes.excel_report.report_creation.report_builder.handlers.LikeFinder import LikeFinder
 from classes.add_tasks.AddTasks import AddTasks
+from classes.clear_msg.ClearMsg import ClearMsg
 
 
 class MessageSort(Data):
@@ -11,34 +10,81 @@ class MessageSort(Data):
     def sorter(self, errors_source):
         whole_data = []
         for block in errors_source:
+
+            if self.config.options["useServices"]:
+                service = self.service_search(ClearMsg.clear_spaces(block["service"]))
+            else:
+                service = ClearMsg.clear_spaces(block["service"])
+
             results = {
-                "service": block["service"],
+                "service": service,
                 "incidentsNumber": block["incidentsNumber"],
                 "errors": [],
                 "light": []
             }
-            block["data"] = sorted(block["data"], key=lambda item: item["body2"])
-            curr_message = "666"
+
+            block["data"] = sorted(block["data"],
+                                   key=lambda item: ("errorMessage1" not in item, item.get("errorMessage1", "")))
+
+            results["errors"].append(MessageSort.new_block_light("Без сообщения", []))
+            results["errors"][0]["incidentsNumber"] = 0
+            results["light"].append(MessageSort.new_block_light("Без сообщения", []))
+            results["light"][0]["incidentsNumber"] = 0
+
+            curr_message = "0123456789asdfgesdsgdfgrgdfdsfgdsfhfsdhshsdghsh"
             for item in block["data"]:
 
-                likes = LikeFinder(self.config)
-                like = likes.run(curr_message)
+                if "errorMessage1" in item:
 
-                if curr_message != item["body2"] and not like:
-                    curr_message = item["body2"]
-                    cleared_msg = MessageSort.clear_msg(curr_message)
-                    search_data = MessageSort.search_data(cleared_msg)
-                    add_tasks = AddTasks(self.config)
-                    found_tasks = add_tasks.run(search_data)
-                    results["errors"].append(MessageSort.new_block_full(cleared_msg, found_tasks, item))
-                    results["light"].append(MessageSort.new_block_light(cleared_msg, found_tasks))
-                else:
-                    results["errors"][-1]["data"].append(item)
-                    results["errors"][-1]["incidentsNumber"] += 1
-                    results["light"][-1]["incidentsNumber"] += 1
+                    search_data = ClearMsg.make_search_data(item["errorMessage1"])
+                    if search_data is not None and len(search_data) >= 10:
+
+                        if curr_message != search_data:
+                            curr_message = search_data
+                            add_tasks = AddTasks(self.config)
+                            found_tasks = add_tasks.run(curr_message)
+
+                            cleared_msg = ClearMsg.clear_spaces(item["errorMessage1"])
+
+                            if self.config.options["usePseudo"]:
+                                cleared_msg = self.pseudo_search(cleared_msg)
+
+                            results["errors"].append(MessageSort.new_block_full(cleared_msg, found_tasks, item))
+                            results["light"].append(MessageSort.new_block_light(cleared_msg, found_tasks))
+                        else:
+                            results["errors"][-1]["data"].append(item)
+                            results["errors"][-1]["incidentsNumber"] += 1
+                            results["light"][-1]["incidentsNumber"] += 1
+
+                    else:
+                        results["errors"][0]["incidentsNumber"] += 1
+                        results["light"][0]["incidentsNumber"] += 1
+
             whole_data.append(results)
 
         return whole_data
+
+    def pseudo_search(self, msg):
+        target = ""
+        for pseudo in self.config.pseudos:
+            if pseudo["msg"] in msg:
+                target = pseudo["pseudo"]
+                break
+            else:
+                target = "Уникальная ошибка: " + msg
+
+        return target
+
+    def service_search(self, msg):
+        target = ""
+        for service in self.config.services:
+            if service["msg"] in msg:
+                target = f"[{service['service']}] {msg}"
+                break
+            else:
+                target = msg
+
+        return target
 
     @staticmethod
     def new_block_light(cleared_msg, found_tasks):
@@ -54,19 +100,3 @@ class MessageSort(Data):
         block = MessageSort.new_block_light(cleared_msg, found_tasks)
         block["data"] = [item]
         return block
-
-    @staticmethod
-    def clear_msg(curr_message):
-        if curr_message != "":
-            return curr_message.replace("\n ", "")
-        else:
-            return curr_message
-
-    @staticmethod
-    def search_data(cleared_msg):
-        if cleared_msg != "":
-            search_data = re.split(":|=", cleared_msg)
-            search_data.append(cleared_msg)
-            return search_data
-        else:
-            return None

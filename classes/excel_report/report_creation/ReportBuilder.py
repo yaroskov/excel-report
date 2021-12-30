@@ -6,6 +6,7 @@ class ReportBuilder(ReportCreator):
     def __init__(self, config):
         super(ReportBuilder, self).__init__(config)
         self.results_handler = None
+        self.results_lite_file_name = ""
 
     def run(self):
         self.handle_source_data()
@@ -20,5 +21,5 @@ class ReportBuilder(ReportCreator):
 
         self.results_handler.print()
         self.results_handler.write()
-        self.results_handler.write_light()
+        self.results_lite_file_name = self.results_handler.write_light()
         self.results_handler.complete_info()

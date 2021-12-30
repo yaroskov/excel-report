@@ -1,5 +1,6 @@
 from classes.data.Data import Data
 from classes.tools.Tools import Tools
+from classes.clear_msg.ClearMsg import ClearMsg
 
 
 class AddTasks(Data):
@@ -14,20 +15,19 @@ class AddTasks(Data):
             tasks_list = self.load_tasks()
 
             found_tasks = []
-            for word in search_data:
-                found_for_word = {
-                    "message": word,
-                    "tasks": []
-                }
-                for task in tasks_list:
-                    if word in task["description"]:
-                        word_found_in_task = {
-                            "key": task["key"],
-                            "summary": task["summary"]
-                        }
-                        found_for_word["tasks"].append(word_found_in_task)
+            found_for_word = {
+                "message": search_data,
+                "tasks": []
+            }
+            for task in tasks_list:
+                if search_data in ClearMsg.make_search_data(task["description"]):
+                    word_found_in_task = {
+                        "key": task["key"],
+                        "summary": task["summary"]
+                    }
+                    found_for_word["tasks"].append(word_found_in_task)
 
-                found_tasks.append(found_for_word)
+            found_tasks.append(found_for_word)
 
             return found_tasks
         else:

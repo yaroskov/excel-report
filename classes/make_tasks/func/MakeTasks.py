@@ -7,9 +7,10 @@ class MakeTasks(Data):
     def __init__(self, config):
         super(MakeTasks, self).__init__(config)
         self.tasks = []
+        self.file_name = ""
 
     def make_tasks(self):
-        html_doc = Tools.text_file_load(self.config.paths["tasks"]["source"])
+        html_doc = Tools.text_file_load_utf8(self.config.paths["tasks"]["source"])
         html_data = BeautifulSoup(html_doc, 'html.parser')
         tbody = html_data.tbody
         rows = tbody.find_all("tr", {"class": "issuerow"})
@@ -29,7 +30,7 @@ class MakeTasks(Data):
         print(self.tasks)
 
     def write(self):
-        Tools.write_data_to_file(data=self.tasks,
-                                 path=self.config.paths["tasks"]["results"],
-                                 prefix="tasks",
-                                 extension="json")
+        self.file_name = Tools.write_data_to_file(data=self.tasks,
+                                                  path=self.config.paths["tasks"]["results"],
+                                                  prefix="tasks",
+                                                  extension="json")

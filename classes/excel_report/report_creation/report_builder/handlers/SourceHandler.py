@@ -9,11 +9,14 @@ class SourceHandler(Data):
 
     @staticmethod
     def beauty_formatting(task):
+
         columns = [
             "service",
             "context",
+            "context2",
             "startDate",
             "statusDate",
+            "SRC_SYSTEM",
             "orderId",
             "orderStatusId",
             "statusText",
