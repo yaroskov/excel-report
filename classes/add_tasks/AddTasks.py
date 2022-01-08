@@ -1,4 +1,4 @@
-import config
+from config import config
 from classes.data.Data import Data
 from classes.tools.Tools import Tools
 from classes.clear_msg.ClearMsg import ClearMsg

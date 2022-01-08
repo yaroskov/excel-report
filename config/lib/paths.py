@@ -1,17 +1,5 @@
-import config_pseudos
-import config_services
-import config_unique
-
-# User's configuration of program.
-
-# Options:
-options = {
-	"usePseudo": True,
-	"useServices": True,
-}
-
-# Paths to program files and folders:
-paths = {
+# Paths list
+data = {
 	"results_full": "excel_report/results/full/",
 	"results_light": "excel_report/results/light/",
 	"results": {
@@ -25,12 +13,3 @@ paths = {
 		"results": "tasks/results/"
 	}
 }
-
-# List of pseudonyms:
-pseudos = config_pseudos.data
-
-# List of services:
-services = config_services.data
-
-# Uniqueization dictionary:
-unique = config_unique

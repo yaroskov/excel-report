@@ -37,8 +37,9 @@ class BeautyReport(Data):
         results += '\n<li>'
         results += '\nОшибки по новым услугам:'
 
+        results += '\n<ol>'
         for service in self.raw["errorsData"]:
-            results += '\n<ol>'
+
             results += '\n<li>'
             results += f'\n{service["service"]}:'
             results += '\n<ul>'
@@ -62,8 +63,8 @@ class BeautyReport(Data):
 
             results += '\n</ul>'
             results += '\n</li>'
-            results += '\n</ol>'
 
+        results += '\n</ol>'
         results += '\n</li>'
         results += '\n</ol>'
         results += '\n'

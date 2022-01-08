@@ -1,4 +1,4 @@
-import config
+from config import config
 from classes.data.Data import Data
 from classes.add_tasks.AddTasks import AddTasks
 from classes.clear_msg.ClearMsg import ClearMsg

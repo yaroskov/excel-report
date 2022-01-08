@@ -1,4 +1,4 @@
-# Pseudonyms list
+# Services list
 data = [
 	{
 		"msg": "Активация корп сим карты от ФЛ",

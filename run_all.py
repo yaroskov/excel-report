@@ -1,4 +1,4 @@
-import config
+from config import config
 from classes.make_tasks.MakeTasksRun import MakeTasksRun
 from classes.excel_report.CreationRun import CreationRun
 from classes.report.BeautyReportRun import ReportRun
