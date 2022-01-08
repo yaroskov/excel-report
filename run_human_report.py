@@ -1,4 +1,4 @@
-from classes.report.ReportRun import ReportRun
+from classes.report.BeautyReportRun import ReportRun
 import config
 
 

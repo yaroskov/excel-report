@@ -1,7 +1,7 @@
-from classes.report.creator.Report import Report
+from classes.report.creator.BeautyReport import BeautyReport
 
 
-class ReportRun(Report):
+class ReportRun(BeautyReport):
     def __init__(self, config):
         super(ReportRun, self).__init__(config)
 

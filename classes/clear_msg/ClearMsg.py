@@ -9,16 +9,16 @@ class ClearMsg:
         return curr_message
 
     @staticmethod
-    def make_search_data(cleared_msg):
+    def make_search_data(cleared_msg, dictionary):
         if cleared_msg != "" and cleared_msg is not None:
             search_data = cleared_msg.split("<br>")[0]
             search_data = ClearMsg.clear_spaces(search_data)
-            search_data = re.sub(r'[0-9]', '', search_data)
-            search_data = search_data.split("MessageId =")[0]
-            search_data = search_data.split("message id =")[0]
-            search_data = search_data.split("Message processing error")[0]
-            search_data = search_data.split("messageId=ID")[0]
-            search_data = search_data.split("xsd-схеме (Обработка документа")[0]
+
+            for regex in dictionary.regex:
+                search_data = re.sub(fr"{regex}", "", search_data)
+
+            for split in dictionary.split:
+                search_data = search_data.split(f"{split}")[0]
 
             return search_data
         else:

@@ -1,3 +1,4 @@
+import config
 from classes.data.Data import Data
 from classes.tools.Tools import Tools
 from classes.clear_msg.ClearMsg import ClearMsg
@@ -20,7 +21,7 @@ class AddTasks(Data):
                 "tasks": []
             }
             for task in tasks_list:
-                if search_data in ClearMsg.make_search_data(task["description"]):
+                if search_data in ClearMsg.make_search_data(task["description"], config.unique):
                     word_found_in_task = {
                         "key": task["key"],
                         "summary": task["summary"]
