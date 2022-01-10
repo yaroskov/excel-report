@@ -1,7 +1,7 @@
 from config import config
 from classes.data.Data import Data
 from classes.add_tasks.AddTasks import AddTasks
-from classes.clear_msg.ClearMsg import ClearMsg
+from classes.dictionaries.Dictionaries import Dictionaries
 
 
 class MessageSort(Data):
@@ -13,9 +13,9 @@ class MessageSort(Data):
         for block in errors_source:
 
             if self.config.options["useServices"]:
-                service = self.service_search(ClearMsg.clear_spaces(block["service"]))
+                service = Dictionaries.service_search(block["service"], config.services)
             else:
-                service = ClearMsg.clear_spaces(block["service"])
+                service = Dictionaries.clear_spaces(block["service"])
 
             results = {
                 "service": service,
@@ -32,62 +32,71 @@ class MessageSort(Data):
             results["light"].append(MessageSort.new_block_light("Без сообщения", [], 666))
             results["light"][0]["incidentsNumber"] = 0
 
-            curr_message = "0123456789asdfgesdsgdfgrgdfdsfgdsfhfsdhshsdghsh"
+            clear_data = []
             for item in block["data"]:
 
                 if "errorMessage1" in item:
+                    source_msg = Dictionaries.remove_stack_trace(item["errorMessage1"])
+                    source_msg = Dictionaries.clear_spaces(source_msg)
 
-                    search_data = ClearMsg.make_search_data(item["errorMessage1"], config.unique)
-                    if search_data is not None and len(search_data) >= 10:
+                    if source_msg is not None and len(source_msg) >= 10:
+                        item["sourceMsg"] = source_msg
 
-                        if curr_message != search_data:
-                            curr_message = search_data
-                            add_tasks = AddTasks(self.config)
-                            found_tasks = add_tasks.run(curr_message)
-
-                            cleared_msg = ClearMsg.clear_spaces(item["errorMessage1"])
-
-                            if self.config.options["usePseudo"]:
-                                cleared_msg = self.pseudo_search(cleared_msg)
-                            else:
-                                cleared_msg = "Уникальная ошибка: " + cleared_msg
-
-                            results["errors"].append(MessageSort.new_block_full(cleared_msg, found_tasks, item))
-                            results["light"].append(MessageSort.new_block_light(cleared_msg, found_tasks, item["orderStatusId"]))
+                        if self.config.options["useDict"]:
+                            dict_results = Dictionaries.dictionary_check(source_msg, config.unique)
                         else:
-                            results["errors"][-1]["data"].append(item)
-                            results["errors"][-1]["incidentsNumber"] += 1
-                            results["light"][-1]["incidentsNumber"] += 1
+                            dict_results = {}
 
+                        item["dictResults"] = dict_results
+                        clear_data.append(item)
                     else:
                         results["errors"][0]["incidentsNumber"] += 1
                         results["light"][0]["incidentsNumber"] += 1
+                else:
+                    results["errors"][0]["incidentsNumber"] += 1
+                    results["light"][0]["incidentsNumber"] += 1
+
+            clear_data = sorted(clear_data,
+                                key=lambda element: ("pseudo" not in element["dictResults"],
+                                                     element["dictResults"].get("pseudo", "")))
+
+            results = self.counter(results, clear_data)
 
             whole_data.append(results)
 
         return whole_data
 
-    def pseudo_search(self, msg):
-        target = ""
-        for pseudo in self.config.pseudos:
-            if pseudo["msg"] in msg:
-                target = pseudo["pseudo"]
-                break
+    def counter(self, results, clear_data):
+        curr_msg = "0123456789asdfgesdsgdfgrgdfdsfgdsfhfsdhshsdghsh"
+
+        for item in clear_data:
+            if len(item["dictResults"]) > 0:
+                compare_str = item["dictResults"]["pseudo"]
             else:
-                target = "Уникальная ошибка: " + msg
+                compare_str = item["sourceMsg"]
 
-        return target
+            if curr_msg != compare_str:
+                curr_msg = compare_str
 
-    def service_search(self, msg):
-        target = ""
-        for service in self.config.services:
-            if service["msg"] in msg:
-                target = f"{msg} ({service['service']})"
-                break
+                if self.config.options["useDict"] and item["dictResults"]:
+                    add_tasks = AddTasks(self.config)
+                    found_tasks = add_tasks.run(item["dictResults"])
+                else:
+                    found_tasks = []
+
+                if len(item["dictResults"]) > 0:
+                    report_msg = item["dictResults"]["pseudo"]
+                else:
+                    report_msg = "Уникальная ошибка: " + item["sourceMsg"]
+
+                results["errors"].append(MessageSort.new_block_full(report_msg, found_tasks, item))
+                results["light"].append(MessageSort.new_block_light(report_msg, found_tasks, item["orderStatusId"]))
             else:
-                target = msg
+                results["errors"][-1]["data"].append(item)
+                results["errors"][-1]["incidentsNumber"] += 1
+                results["light"][-1]["incidentsNumber"] += 1
 
-        return target
+        return results
 
     @staticmethod
     def new_block_light(cleared_msg, found_tasks, state):

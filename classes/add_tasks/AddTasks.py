@@ -1,7 +1,7 @@
 from config import config
 from classes.data.Data import Data
 from classes.tools.Tools import Tools
-from classes.clear_msg.ClearMsg import ClearMsg
+from classes.dictionaries.Dictionaries import Dictionaries
 
 
 class AddTasks(Data):
@@ -11,25 +11,27 @@ class AddTasks(Data):
     def load_tasks(self):
         return Tools.json_load(self.config.paths["tasks"]["list"])
 
-    def run(self, search_data):
-        if search_data:
+    def run(self, dict_results):
+        if dict_results:
+            tasks = []
             tasks_list = self.load_tasks()
-
-            found_tasks = []
-            found_for_word = {
-                "message": search_data,
-                "tasks": []
-            }
             for task in tasks_list:
-                if search_data in ClearMsg.make_search_data(task["description"], config.unique):
+                cleared_task = Dictionaries.remove_stack_trace(task["description"])
+                cleared_task = Dictionaries.clear_spaces(cleared_task)
+
+                result = True
+                for string in dict_results["target"]:
+                    if string not in cleared_task:
+                        result = False
+                        break
+
+                if result is True:
                     word_found_in_task = {
                         "key": task["key"],
                         "summary": task["summary"]
                     }
-                    found_for_word["tasks"].append(word_found_in_task)
+                    tasks.append(word_found_in_task)
 
-            found_tasks.append(found_for_word)
-
-            return found_tasks
+            return tasks
         else:
-            return None
+            return False

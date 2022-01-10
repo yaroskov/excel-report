@@ -46,9 +46,8 @@ class BeautyReport(Data):
 
             for error in service["light"]:
                 task_msg = ''
-                if error["foundTasks"] and len(error["foundTasks"]) > 0 \
-                        and error['foundTasks'][0]['tasks'] and len(error['foundTasks'][0]['tasks']) > 0:
-                    task_key = error["foundTasks"][0]["tasks"][0]["key"]
+                if error["foundTasks"] and len(error["foundTasks"]) > 0:
+                    task_key = error["foundTasks"][0]["key"]
                     task_msg = f' - <a href="https://jira.egovdev.ru/browse/{task_key}">{task_key}</a>'
 
                 results += '\n<li style="margin-bottom: 10px">'
