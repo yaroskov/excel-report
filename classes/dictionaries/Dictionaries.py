@@ -36,7 +36,7 @@ class Dictionaries:
         target = ""
         for service in dictionary:
             if service["msg"] in msg:
-                target = f"{msg} ({service['service']})"
+                target = f"{msg} ({service['service'][-3:]})"
                 break
             else:
                 target = msg
